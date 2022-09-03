@@ -1,26 +1,18 @@
-import React from 'react';
+import { FC, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import { Expense } from './model/expense/Expense';
+
+//const expense: Expense = new Expense(10, "shoe", new Date(Date.parse('Aug 31, 2022')));
+
+const App: FC = () => {
+  //const [myExpense, setMyExpense] = useState<Expense | null>(expense);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
-}
+};
 
 export default App;
