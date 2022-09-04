@@ -5,18 +5,14 @@ var expenseEnums_1 = require("./expenseEnums");
 var ExpenseError_1 = require("./ExpenseError");
 var Expense = /** @class */ (function () {
     //EFFECTS: constructs an expense with amount, category and date 
-    //REQUIRES: day has to be an 
+    //REQUIRES: day/month combination must be valid, unexpected behavior otherwise 
+    //          e.g. supply month: april, day: 31; constructor will output next valid date
+    //          which would be may 1st 
     function Expense(amount, category, month, day, year) {
-        // try {
         this.checkMonthDay(month, day);
         this.amount = amount;
         this.category = category;
         this.date = this.formatDateString(month, day, year);
-        // } catch (err) {
-        //   if (err instanceof ExpenseError) {
-        //     console.log(err.message + ". Date was estimated.");
-        //   }
-        // }
     }
     //EFFECTS: takes in a month, day, and year and returns a date object
     Expense.prototype.formatDateString = function (month, day, year) {
