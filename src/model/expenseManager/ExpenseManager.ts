@@ -1,5 +1,4 @@
-import { throws } from "assert";
-import { Expense } from "./expense/Expense";
+import { Expense } from "../expense/Expense";
 
 class ExpenseManager {
   expenses: Expense[];
