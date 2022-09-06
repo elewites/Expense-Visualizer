@@ -1,6 +1,7 @@
-import { Category, MonthDict, MonthDays } from "./expenseEnums";
+import { Category, MonthDict, MonthDays } from "./ExpenseEnums";
 import { ExpenseError } from "./ExpenseError";
 
+// represens an expense with an amount, category, and date expense occured
 class Expense {
   private amount: number;
   private category: Category;

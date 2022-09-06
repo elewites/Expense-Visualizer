@@ -1,5 +1,5 @@
 import { Expense } from "./Expense";
-import { Category, MonthDict } from "./expenseEnums";
+import { Category, MonthDict } from "./ExpenseEnums";
 
 const myExpense: Expense = new Expense(10, Category.Clothing, MonthDict.Feb, 20, 2022);
 const amount: number = 10;
