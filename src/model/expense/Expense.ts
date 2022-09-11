@@ -6,6 +6,9 @@ class Expense {
   private amount: number;
   private category: Category;
   private date: Date;
+  private month: MonthDict;
+  private day: number;
+  private year: number;
 
   //EFFECTS: constructs an expense with amount, category and date 
   //REQUIRES: day/month combination must be valid, unexpected behavior otherwise 
@@ -17,20 +20,23 @@ class Expense {
     day: number,
     year: number) {
 
-      this.checkMonthDay(month, day);
-      this.amount = amount;
-      this.category = category;
-      this.date = this.formatDateString(month, day, year);
-    
+    this.amount = amount;
+    this.category = category;
+    this.month = month;
+    this.day = day;
+    this.year = year;
+    this.date = this.formatDateString();
+
   }
 
   //EFFECTS: takes in a month, day, and year and returns a date object
-  private formatDateString(month: MonthDict, day: number, year: number): Date {
-    const stringDate: string = `${month} ${day}, ${year}`;
+  private formatDateString(): Date {
+    const stringDate: string = `${this.month} ${this.day}, ${this.year}`;
     const date: Date = new Date(Date.parse(stringDate));
     return date;
   }
 
+  /* unccommented: functionality not available yet
   //EFFECTS: throws exception if month and day combination is invalid
   private checkMonthDay(month: MonthDict, day: number) {
     if (day < 1) {
@@ -42,6 +48,7 @@ class Expense {
       }
     }
   }
+  */
 
   //EFFECTS: returns amount
   getAmount(): number {
@@ -56,6 +63,38 @@ class Expense {
     return this.date;
   }
 
+  //EFFECTS: returns month as a MonthDict
+  getMonth(): MonthDict {
+    return this.month;
+  }
+
+  //EFFECTS: returns day
+  getDay(): number {
+    return this.day;
+  }
+
+  getYear(): number {
+    return this.year;
+  }
+
+  /**
+ * [someFunction description]
+ * @param  {[Expense]} expense [Expense class to test equality agaisnt]
+ * @return {[boolean]}      [boolean as result of equality check]
+ */
+  //EFFECTS: returns true if this and expense are equal, false otherwise
+  isEqual(expense: Expense): boolean {
+    const amount: boolean = this.amount === expense.getAmount();
+    const category: boolean = this.category === expense.getCategory();
+    const month: boolean = this.month === expense.getMonth();
+    const day: boolean = this.day === expense.getDay();
+    const year: boolean = this.year === expense.getYear();
+    return amount && category && month && day && year;
+  }
+
+  getOne(): number {
+    return 1;
+  }
 }
 
 export { Expense };
