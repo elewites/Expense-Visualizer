@@ -1,78 +1,111 @@
 "use strict";
 exports.__esModule = true;
 exports.Expense = void 0;
-;
+var uuid_1 = require("uuid");
+/**
+ * represents an expense with an amount, category, and date of purchase
+ */
 var Expense = /** @class */ (function () {
-    //EFFECTS: constructs an expense with amount, category and date 
-    //REQUIRES: day/month combination must be valid, unexpected behavior otherwise 
-    //          e.g. supply month: april, day: 31; constructor will output next valid date
-    //          which would be may 1st 
-    function Expense(amount, category, month, day, year) {
+    /**
+     * constructs an expense with given parameters and a unique id
+     * @param amount
+     * @param category
+     * @param month
+     * @param day
+     * @param year
+     * @param description will be truncated to first two words in string
+     */
+    function Expense(amount, category, month, day, year, description) {
         this.amount = amount;
         this.category = category;
         this.month = month;
         this.day = day;
         this.year = year;
         this.date = this.formatDateString();
+        this.id = (0, uuid_1.v4)();
+        this.description = this.formatDescription(description);
     }
-    //EFFECTS: takes in a month, day, and year and returns a date object
+    /**
+     * builds a date object using this.month, this.day, and this.year
+     * @returns Date object
+     */
     Expense.prototype.formatDateString = function () {
         var stringDate = "".concat(this.month, " ").concat(this.day, ", ").concat(this.year);
         var date = new Date(Date.parse(stringDate));
         return date;
     };
-    /* unccommented: functionality not available yet
-    //EFFECTS: throws exception if month and day combination is invalid
-    private checkMonthDay(month: MonthDict, day: number) {
-      if (day < 1) {
-        throw new ExpenseError("Day number cannot be less than 1");
-      } else {
-        const monthDay: number = MonthDays[month];
-        if (day > monthDay) {
-          throw new ExpenseError(`month ${month} and day ${day} combination not possible`);
-        }
-      }
-    }
-    */
-    //EFFECTS: returns amount
+    /**
+     * truncates the description to a two phrase
+     * e.g. "My favorite shoe" -> "My shoe"
+     * @param description
+     * @returns an array containing only the first two words in the given string
+     */
+    Expense.prototype.formatDescription = function (description) {
+        var format = description.split(' ');
+        return format.slice(0, 2);
+    };
+    /**
+     * @returns amount of expense
+     */
     Expense.prototype.getAmount = function () {
         return this.amount;
     };
-    //EFFECTS: returns category
+    /**
+     * @returns expense category
+     */
     Expense.prototype.getCategory = function () {
         return this.category;
     };
-    //EFFECTS: returns date
+    /**
+     * @returns expense date
+     */
     Expense.prototype.getDate = function () {
         return this.date;
     };
-    //EFFECTS: returns month as a MonthDict
+    /**
+     * @returns expense month
+     */
     Expense.prototype.getMonth = function () {
         return this.month;
     };
-    //EFFECTS: returns day
+    /**
+     * @returns expense day
+     */
     Expense.prototype.getDay = function () {
         return this.day;
     };
+    /**
+     * @returns expense year
+     */
     Expense.prototype.getYear = function () {
         return this.year;
     };
     /**
-   * [someFunction description]
-   * @param  {[Expense]} expense [Expense class to test equality agaisnt]
-   * @return {[boolean]}      [boolean as result of equality check]
-   */
-    //EFFECTS: returns true if this and expense are equal, false otherwise
-    Expense.prototype.isEqual = function (expense) {
-        var amount = this.amount === expense.getAmount();
-        var category = this.category === expense.getCategory();
-        var month = this.month === expense.getMonth();
-        var day = this.day === expense.getDay();
-        var year = this.year === expense.getYear();
-        return amount && category && month && day && year;
+     *
+     * @returns expense id
+     */
+    Expense.prototype.getId = function () {
+        return this.id;
     };
-    Expense.prototype.getOne = function () {
-        return 1;
+    /**
+     *
+     * @returns description array
+     */
+    Expense.prototype.getDescription = function () {
+        return this.description;
+    };
+    /**
+   * determines if expenses are equal based on their id
+   * @param  {[Expense]} expense to test equality agaisnt
+   * @return {[boolean]} true if expenses are equal, false otherwise
+   */
+    Expense.prototype.isEqual = function (expense) {
+        if (this.id === expense.id) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     return Expense;
 }());
