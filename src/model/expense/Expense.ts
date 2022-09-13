@@ -1,6 +1,9 @@
-;import { Category, MonthDict, MonthDays } from "./ExpenseEnums";
-import { ExpenseError } from "./ExpenseError";
+import { Category, MonthDict } from "./ExpenseEnums";
+import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * represents an expense with an amount, category, and date of purchase
+ */
 class Expense {
   private amount: number;
   private category: Category;
@@ -8,16 +11,24 @@ class Expense {
   private month: MonthDict;
   private day: number;
   private year: number;
+  private id: string;
+  private description: string[];
 
-  //EFFECTS: constructs an expense with amount, category and date 
-  //REQUIRES: day/month combination must be valid, unexpected behavior otherwise 
-  //          e.g. supply month: april, day: 31; constructor will output next valid date
-  //          which would be may 1st 
+  /**
+   * constructs an expense with given parameters and a unique id
+   * @param amount 
+   * @param category 
+   * @param month 
+   * @param day 
+   * @param year 
+   * @param description will be truncated to first two words in string
+   */
   constructor(amount: number,
     category: Category,
     month: MonthDict,
     day: number,
-    year: number) {
+    year: number,
+    description: string) {
 
     this.amount = amount;
     this.category = category;
@@ -25,75 +36,102 @@ class Expense {
     this.day = day;
     this.year = year;
     this.date = this.formatDateString();
-
+    this.id = uuidv4();
+    this.description = this.formatDescription(description);
   }
 
-  //EFFECTS: takes in a month, day, and year and returns a date object
+  /**
+   * builds a date object using this.month, this.day, and this.year
+   * @returns Date object
+   */
   private formatDateString(): Date {
     const stringDate: string = `${this.month} ${this.day}, ${this.year}`;
     const date: Date = new Date(Date.parse(stringDate));
     return date;
   }
 
-  /* unccommented: functionality not available yet
-  //EFFECTS: throws exception if month and day combination is invalid
-  private checkMonthDay(month: MonthDict, day: number) {
-    if (day < 1) {
-      throw new ExpenseError("Day number cannot be less than 1");
-    } else {
-      const monthDay: number = MonthDays[month];
-      if (day > monthDay) {
-        throw new ExpenseError(`month ${month} and day ${day} combination not possible`);
-      }
-    }
+  /**
+   * truncates the description to a two phrase
+   * e.g. "My favorite shoe" -> "My shoe"
+   * @param description
+   * @returns an array containing only the first two words in the given string 
+   */
+  private formatDescription(description: string): string[] {
+    const format = description.split(' ');
+    return format.slice(0, 2);
   }
-  */
 
-  //EFFECTS: returns amount
+  /**
+   * @returns amount of expense
+   */
   getAmount(): number {
     return this.amount;
   }
-  //EFFECTS: returns category
+
+  /**
+   * @returns expense category
+   */
   getCategory(): Category {
     return this.category;
   }
-  //EFFECTS: returns date
+
+  /**
+   * @returns expense date
+   */
   getDate() {
     return this.date;
   }
 
-  //EFFECTS: returns month as a MonthDict
+  /**
+   * @returns expense month
+   */
   getMonth(): MonthDict {
     return this.month;
   }
 
-  //EFFECTS: returns day
+  /**
+   * @returns expense day 
+   */
   getDay(): number {
     return this.day;
   }
 
+  /**
+   * @returns expense year
+   */
   getYear(): number {
     return this.year;
   }
 
   /**
- * [someFunction description]
- * @param  {[Expense]} expense [Expense class to test equality agaisnt]
- * @return {[boolean]}      [boolean as result of equality check]
- */
-  //EFFECTS: returns true if this and expense are equal, false otherwise
-  isEqual(expense: Expense): boolean {
-    const amount: boolean = this.amount === expense.getAmount();
-    const category: boolean = this.category === expense.getCategory();
-    const month: boolean = this.month === expense.getMonth();
-    const day: boolean = this.day === expense.getDay();
-    const year: boolean = this.year === expense.getYear();
-    return amount && category && month && day && year;
+   * 
+   * @returns expense id
+   */
+  getId(): string {
+    return this.id;
   }
 
-  getOne(): number {
-    return 1;
+  /**
+   * 
+   * @returns description array
+   */
+  getDescription(): string[] {
+    return this.description;
   }
+
+  /**
+ * determines if expenses are equal based on their id 
+ * @param  {[Expense]} expense to test equality agaisnt
+ * @return {[boolean]} true if expenses are equal, false otherwise 
+ */
+  isEqual(expense: Expense): boolean {
+    if (this.id === expense.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
 
 export { Expense };
